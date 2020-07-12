@@ -21,11 +21,17 @@ class Board:
                                        [1, 4, 7],
                                        [6, 4, 2]])
 
+        # Stores the previous move made on the board
+        self.prev_move = []
+
     def print_board(self):
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 print(self.board[i][j], end=" ")
             print("")
+
+    def get_board(self):
+        return self.board
 
     def check_if_end(self):
         for condition in self.winConditions:
@@ -42,9 +48,19 @@ class Board:
 
         return 'T'  # The board is full
 
+    def undo_move(self):
+        #print(self.prev_move)
+        move = self.prev_move.pop()
+        self.board[(move - 1) // 3][(move - 1) % 3] = chr(move+48)
+        #self.print_board()
+
     def fill_square(self, choice, symbol):
         self.board[(choice - 1) // 3][(choice - 1) % 3] = symbol
+        self.prev_move.append(choice)
 
     # Takes a number 1-9, converts to the appropriate location within the board and returns that square
     def get_square(self, choice):
         return self.board[(choice - 1) // 3][(choice - 1) % 3]
+
+    def get_prev_move(self):
+        return self.prev_move
